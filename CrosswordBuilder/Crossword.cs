@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using System;
 using System.Linq;
 
 namespace CrosswordBuilder;
@@ -15,15 +16,32 @@ public class Crossword
         Words = [];
     }
 
-    public void SortWords()
+    public void SortWords(WordSortOrder sortOrder)
     {
-        var sortedList = Words.OrderByDescending(w => w.Content.Length).ToList();
-        Words.Clear();
-        Words.AddRange(sortedList);
+        switch (sortOrder)
+        {
+            case WordSortOrder.Alphabetical:
+            {
+                var sortedList = Words.OrderBy(w => w.Content).ToList();
+                Words.Clear();
+                Words.AddRange(sortedList);
+                break;
+            }
+            case WordSortOrder.Length:
+            {
+                var sortedList = Words.OrderByDescending(w => w.Content.Length).ToList();
+                Words.Clear();
+                Words.AddRange(sortedList);
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(sortOrder), sortOrder, null);
+        }
     }
 
-    public bool Build(int gridSize)
+    public bool Build(int gridSize, out string failedWord)
     {
+        failedWord = "";
         GridSize = gridSize;
 
         if (Words.Count <= 1)
@@ -36,8 +54,13 @@ public class Crossword
 
         for (var i = 1; i < Words.Count; i++)
         {
-            if (!PlaceWordSomewhere(Words[i]))
+            var wordToPlace = Words[i];
+
+            if (!PlaceWordSomewhere(wordToPlace))
+            {
+                failedWord = wordToPlace.Content;
                 return false;
+            }
         }
         
         return true;

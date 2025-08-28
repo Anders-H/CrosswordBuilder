@@ -88,12 +88,13 @@ public partial class MainWindow : Form
             return;
         }
 
-        _document.SortWords();
+        _document.SortWords(WordSortOrder.Length);
         var success = false;
+        var failedWord = "";
 
         for (var size = longestWord; size < longestWord + 100; size++)
         {
-            if (_document.Build(size))
+            if (_document.Build(size, out failedWord))
             {
                 success = true;
                 break;
@@ -102,7 +103,7 @@ public partial class MainWindow : Form
 
         if (!success)
         {
-            g.DrawString("Failed to build crossword.", font, Brushes.Black, 40, 40);
+            g.DrawString($@"Failed to build crossword. The word ""{failedWord}"" does not fit.", font, Brushes.Black, 40, 40);
             return;
         }
 
@@ -252,5 +253,23 @@ public partial class MainWindow : Form
     {
         solutionVisibleToolStripMenuItem.Checked = !solutionVisibleToolStripMenuItem.Checked;
         printPreviewControl1.InvalidatePreview();
+    }
+
+    private void editToolStripMenuItem_Click(object sender, System.EventArgs e)
+    {
+        _document.SortWords(WordSortOrder.Alphabetical);
+        using var x = new PickWordDialog();
+        x.Words = _document.Words;
+        x.ShowDialog(this);
+
+        if (x.DialogResult == DialogResult.OK)
+        {
+            var word = x.Word;
+
+            if (word == null)
+                throw new System.InvalidOperationException("No word was selected.");
+
+            xxxx
+        }
     }
 }

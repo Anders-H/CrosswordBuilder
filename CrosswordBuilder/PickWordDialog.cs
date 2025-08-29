@@ -54,5 +54,6 @@ public partial class PickWordDialog : Form
         }
 
         Word = (Word)listView1.SelectedItems[0].Tag!;
+        DialogResult = DialogResult.OK;
     }
 }

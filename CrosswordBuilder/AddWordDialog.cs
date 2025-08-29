@@ -6,11 +6,24 @@ namespace CrosswordBuilder;
 
 public partial class AddWordDialog : Form
 {
-    public string NewWord { get; private set; }
+    public string? NewWord { get; set; }
+    public bool? AddMode { get; set; }
 
     public AddWordDialog()
     {
         InitializeComponent();
+    }
+
+    private void AddWordDialog_Load(object sender, EventArgs e)
+    {
+        if (!AddMode.HasValue)
+            throw new SystemException("AddMode is null.");
+
+        if (!AddMode.Value)
+        {
+            Text = $@"Edit Word: {NewWord}";
+            txtWord.Text = NewWord;
+        }
     }
 
     private void btnOk_Click(object sender, EventArgs e)

@@ -52,6 +52,7 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.printPreviewControl1 = new System.Windows.Forms.PrintPreviewControl();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +87,8 @@
             // 
             this.wordsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.removeToolStripMenuItem});
             this.wordsToolStripMenuItem.Name = "wordsToolStripMenuItem";
             this.wordsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.wordsToolStripMenuItem.Text = "&Words";
@@ -119,14 +121,16 @@
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // solutionVisibleToolStripMenuItem
             // 
+            this.solutionVisibleToolStripMenuItem.Checked = true;
+            this.solutionVisibleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.solutionVisibleToolStripMenuItem.Name = "solutionVisibleToolStripMenuItem";
-            this.solutionVisibleToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.solutionVisibleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.solutionVisibleToolStripMenuItem.Text = "Solution visible";
             this.solutionVisibleToolStripMenuItem.Click += new System.EventHandler(this.solutionVisibleToolStripMenuItem_Click);
             // 
@@ -140,7 +144,7 @@
             this.toolStripMenuItem5,
             this.toolStripMenuItem6});
             this.zoomToolStripMenuItem.Name = "zoomToolStripMenuItem";
-            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.zoomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zoomToolStripMenuItem.Text = "&Zoom";
             // 
             // autoToolStripMenuItem
@@ -242,6 +246,13 @@
             this.printDocument1.DocumentName = "Crossword";
             this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
             // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Text = "Remove...";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -291,6 +302,7 @@
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem solutionVisibleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
 

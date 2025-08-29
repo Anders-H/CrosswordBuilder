@@ -139,7 +139,7 @@ public partial class MainWindow : Form
                     g.DrawString(numberString, font, Brushes.Black, x + 2, y + 2);
                 }
                 
-                if (cell.Letter != ' ' && solutionVisibleToolStripMenuItem.CheckOnClick)
+                if (cell.Letter != ' ' && solutionVisibleToolStripMenuItem.Checked)
                 {
                     var letterString = cell.Letter.ToString();
                     var letterSize = g.MeasureString(letterString, font);
@@ -238,6 +238,7 @@ public partial class MainWindow : Form
     private void addToolStripMenuItem_Click(object sender, System.EventArgs e)
     {
         using var x = new AddWordDialog();
+        x.AddMode = true;
 
         if (x.ShowDialog(this) != DialogResult.OK)
             return;
@@ -260,16 +261,51 @@ public partial class MainWindow : Form
         _document.SortWords(WordSortOrder.Alphabetical);
         using var x = new PickWordDialog();
         x.Words = _document.Words;
-        x.ShowDialog(this);
+        var originalWord = "";
 
-        if (x.DialogResult == DialogResult.OK)
+        if (x.ShowDialog(this) == DialogResult.OK)
+        {
+            var word = x.Word;
+            originalWord = word?.Content ?? "";
+
+            if (word == null)
+                throw new System.InvalidOperationException("No word was selected.");
+
+            using var y = new AddWordDialog();
+            y.AddMode = false;
+            y.NewWord = word.Content;
+
+            if (y.ShowDialog(this) == DialogResult.OK)
+            {
+                DocumentChanged = true;
+                word.Content = y.NewWord!;
+                lblStatus.Text = $@"Word edited from {originalWord} to {word.Content}.";
+                printPreviewControl1.InvalidatePreview();
+            }
+        }
+    }
+
+    private void removeToolStripMenuItem_Click(object sender, System.EventArgs e)
+    {
+        _document.SortWords(WordSortOrder.Alphabetical);
+        using var x = new PickWordDialog();
+        x.Words = _document.Words;
+
+        if (x.ShowDialog(this) == DialogResult.OK)
         {
             var word = x.Word;
 
             if (word == null)
                 throw new System.InvalidOperationException("No word was selected.");
 
-            xxxx
+            if (MessageBox.Show(this, $@"Are you sure you want to remove the word ""{word.Content}""?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            _document.Words.Remove(word);
+            DocumentChanged = true;
+            lblWordCount.Text = $@"Words: {_document.Words.Count}";
+            lblStatus.Text = $@"Word removed: {word.Content}";
+            printPreviewControl1.InvalidatePreview();
         }
     }
 }
